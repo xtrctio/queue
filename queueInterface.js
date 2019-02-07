@@ -141,7 +141,7 @@ class QueueInterface {
    *
    * @param {string} subscriptionId
    * @param {number|null} [timeoutMs=null]
-   * @returns {Promise<void>}
+   * @returns {Promise<object|null>} message object, or null if timeout
    */
   async subscribeOnce(subscriptionId, timeoutMs = null) {
     const self = this;

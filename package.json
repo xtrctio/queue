@@ -71,7 +71,7 @@
     "url": "git+https://github.com/xtrctio/queue.git"
   },
   "scripts": {
-    "docs": "jsdoc2md --template README.template --files \"lib/**/*.js\" > README.md && git add README.md",
+    "docs": "jsdoc2md --template README.template --files \"queueInterface.js\" \"index.js\" > README.md && git add README.md",
     "integration": "mocha \"tests/**/*.it.js\"",
     "internet": "mocha \"tests/**/*.internet.js\"",
     "lint": "eslint \"**/*.js\" --fix && fixpack",
