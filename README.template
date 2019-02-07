@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/xtrctio/queue.svg?style=svg)](https://circleci.com/gh/xtrctio/queue)
 
-QueueInterface wrapper to expose standard interface
+Queue wrapper to expose standard interface
 
 ## Usage
 ```javascript
