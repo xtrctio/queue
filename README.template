@@ -1,0 +1,26 @@
+# queue
+
+[![CircleCI](https://circleci.com/gh/xtrctio/queue.svg?style=svg)](https://circleci.com/gh/xtrctio/queue)
+
+QueueInterface wrapper to expose standard interface
+
+## Usage
+```javascript
+const Queue = require('@xtrctio/queue');
+
+const queue = new Queue(pubsubConfig);
+
+(async () => {
+    await queue.open('some-topic');
+
+    await queue.write({something: 'foo'});
+
+    // Would receive something like: {something: 'foo'}
+    const message = await queue.subscribeOnce('subscription-id');
+
+    const messageProcessor = (message) => {};
+    await queue.subscribe(messageProcessor, 'subscription-id');
+})();
+```
+
+{{>main}}
