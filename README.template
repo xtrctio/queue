@@ -1,0 +1,13 @@
+# queue
+QueueInterface wrapper to expose standard interface
+
+## Usage
+```javascript
+const QueueInterface = require('@xtrctio/queue');
+
+
+```
+
+## API
+
+{{>main}}

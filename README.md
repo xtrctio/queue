@@ -1,2 +1,2 @@
 # queue
-Queue wrapper to expose standard interface
+QueueInterface wrapper to expose standard interface

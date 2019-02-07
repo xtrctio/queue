@@ -1,0 +1,33 @@
+jobs:
+  test:
+    docker:
+      - image: node:latest
+      - image: redis:4
+      - image: messagebird/gcloud-pubsub-emulator:latest
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      # run tests!
+      - run:
+          name: testing
+          command: npm run test-all
+          environment:
+            PUBSUB_EMULATOR_HOST: localhost:8681
+            REDIS_HOST: localhost
+            REDIS_PORT: 6379
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test
