@@ -2,7 +2,6 @@ jobs:
   test:
     docker:
       - image: node:latest
-      - image: redis:4
       - image: messagebird/gcloud-pubsub-emulator:latest
     working_directory: ~/repo
     steps:
@@ -24,8 +23,6 @@ jobs:
           command: npm run test-all
           environment:
             PUBSUB_EMULATOR_HOST: localhost:8681
-            REDIS_HOST: localhost
-            REDIS_PORT: 6379
 workflows:
   version: 2
   test:
