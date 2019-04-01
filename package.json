@@ -76,6 +76,7 @@
     "integration": "mocha \"tests/**/*.it.js\"",
     "internet": "mocha \"tests/**/*.internet.js\"",
     "lint": "eslint \"**/*.js\" --fix && fixpack",
+    "next": "npm version prerelease && npm publish --tag next && git push",
     "test": "npm run unit && npm run lint",
     "test-all": "nyc mocha --use_strict \"tests/**/*.internet.js\" \"tests/**/*.it.js\" \"tests/**/*.unit.js\"",
     "test-most": "nyc mocha --use_strict \"tests/**/*.it.js\" \"tests/**/*.unit.js\"",
