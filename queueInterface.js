@@ -175,10 +175,14 @@ class QueueInterface {
           clearTimeout(subscribeTimeout);
         }
 
-        await this._subscription.close();
         this._subscription.removeListener('message', self._registeredMsgProcessor);
         this._subscription.removeListener('error', errorHandler);
         this._subscription = null;
+      };
+
+      this._subscription.unsubscribe = async () => {
+        await unregister();
+        return res(null);
       };
 
       this._registeredMsgProcessor = async (msg) => {
@@ -206,18 +210,28 @@ class QueueInterface {
   async close() {
     const self = this;
 
+    log.info('Closing queue..');
+
     if (this._subscription) {
-      if (self._registeredMsgProcessor) {
+      if (this._subscription && this._subscription.unsubscribe) {
+        await this._subscription.unsubscribe();
+      }
+
+      if (this._subscription && self._registeredMsgProcessor) {
         this._subscription.removeListener('message', self._registeredMsgProcessor);
       }
 
-      this._subscription.removeListener('error', QueueInterface._subscriptionErrorHandler);
+      if (this._subscription) {
+        this._subscription.removeListener('error', QueueInterface._subscriptionErrorHandler);
+      }
     }
 
     this._subscription = null;
     this._topic = null;
 
     this.isReady = false;
+
+    log.info('Queue closed');
   }
 }
 

@@ -131,4 +131,36 @@ describe('queueInterface client tests', function () {
     expect(await queue.subscribeOnce(subscriptionId)).to.eql({ foo: 'bar6' });
     expect(await queue.subscribeOnce(subscriptionId, 100)).to.eql(null);
   });
+
+  it('stops listening to queue on close', async () => {
+    const pubsub = new PubSub({
+      projectId: 'foo',
+      credentials: {
+        client_email: 'foo@bar.com',
+        private_key: 'some-similarityKey',
+      },
+    });
+
+    const config = {
+      queue: {
+        topicName: `a${uuid()}`,
+      },
+    };
+
+    const subscriptionId = 'bar';
+    queue = new QueueInterface(pubsub);
+    await queue.open(config.queue.topicName);
+
+    const topic = (await pubsub.topic(config.queue.topicName).get({ autoCreate: true }))[0];
+
+    // If we create the subscription early, then the published messages will accumulate
+    await topic.subscription(subscriptionId, { flowControl: { maxMessages: 1 } }).get({ autoCreate: true });
+
+    const waiting = queue.subscribeOnce(subscriptionId);
+    await Promise.delay(100);
+
+    await queue.close();
+
+    expect(await waiting).to.eql(null);
+  });
 });
